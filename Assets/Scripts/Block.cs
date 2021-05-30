@@ -39,6 +39,8 @@ public class Block : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        checkEdges();
+        transform.Translate(velocity* Time.deltaTime);
         
     }
 
@@ -47,8 +49,7 @@ public class Block : MonoBehaviour
     }
 
     void FixedUpdate(){
-        transform.Translate(velocity* Time.deltaTime);
-        checkEdges();
+        
     }
 
     void checkEdges(){
