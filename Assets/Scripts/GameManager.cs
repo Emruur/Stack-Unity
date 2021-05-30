@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
 
     public Block startingBlock;
     public Block secondBlock;
 
     public Spawner spawner;
 
-
+    public float perfectHitTreshold= 0.1f;
 
 
     void Start()
@@ -33,8 +33,6 @@ public class GameManager : MonoBehaviour
 
             
 
-            current.Stop();
-
             //slice blocks 
             if(Block.blockCount%2==0){
                 SliceBlockOnZ();
@@ -42,7 +40,7 @@ public class GameManager : MonoBehaviour
             else{
                 SliceBlockOnX();
             }
-            
+            current.Stop();
 
             //set current as previous
             current.setAsPrevious();
@@ -67,6 +65,14 @@ public class GameManager : MonoBehaviour
         float previousBlockEdgeZ= previous.transform.position.z+ previous.transform.localScale.z/2;
 
         float hangLength= currentBlockEdgeZ-previousBlockEdgeZ;
+
+        if(Mathf.Abs(hangLength)< perfectHitTreshold){
+            hangLength= 0;
+            current.transform.position= new Vector3(
+                previous.transform.position.x, current.transform.position.y,previous.transform.position.z);
+
+            return;
+        }
 
         //print(hangLength);
 
@@ -113,6 +119,13 @@ public class GameManager : MonoBehaviour
 
             float hangLength= currentBlockEdgeX-previousBlockEdgeX;
 
+            if(Mathf.Abs(hangLength)< perfectHitTreshold){
+                hangLength= 0;
+                current.transform.position= new Vector3(
+                    previous.transform.position.x, current.transform.position.y,previous.transform.position.z);
+
+                return;
+            }
             //print(hangLength);
 
             float newCurrentXScale= current.transform.localScale.x- Mathf.Abs(hangLength);
@@ -135,21 +148,19 @@ public class GameManager : MonoBehaviour
                 //falling block is going to be in front of the current block
                 fallerPosition= current.transform.position +current.transform.right*(current.transform.localScale.x/2+ hangLength/2);
 
+                spawner.spawnFallerX(Mathf.Abs(hangLength), fallerPosition);
+
 
             }
-            else{
+            else if(hangLength<0){
                 //Block has come short 
                 //shift it forward
                 current.transform.Translate(current.transform.right*-1* hangLength/2);
 
                 // Falling block is going to be behind the current block;
                 fallerPosition= current.transform.position +current.transform.right*(-current.transform.localScale.x/2+ hangLength/2);
+
+                spawner.spawnFallerX(Mathf.Abs(hangLength), fallerPosition);
             }
-
-            spawner.spawnFallerX(Mathf.Abs(hangLength), fallerPosition);
         }
-
-    
-
-    
 }
