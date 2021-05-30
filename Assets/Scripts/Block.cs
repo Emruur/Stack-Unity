@@ -53,11 +53,11 @@ public class Block : MonoBehaviour
     }
 
     void checkEdges(){
-        if(transform.position.x>= Spawner.spawnDistance || transform.position.x< -Spawner.spawnDistance ){
+        if(transform.position.x> -Spawner.spawnPosition2.x || transform.position.x< Spawner.spawnPosition2.x ){
             velocity.x *= -1;
         }
 
-        else if(transform.position.z>= Spawner.spawnDistance || transform.position.z< -Spawner.spawnDistance ){
+        else if(transform.position.z>  -Spawner.spawnPosition1.z || transform.position.z< Spawner.spawnPosition1.z ){
             velocity.z *= -1;
         }
     }

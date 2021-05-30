@@ -7,8 +7,9 @@ public class Spawner : MonoBehaviour
     public GameObject blockPrefab;
     public GameObject fallerPrefab;
 
-    Vector3 spawnPosition1;
-    Vector3 spawnPosition2;
+    public static Vector3 spawnPosition1;
+    public static Vector3 spawnPosition2;
+    
     float spawnIncrementHeight;
     public static float spawnDistance= 8;
 
@@ -18,6 +19,7 @@ public class Spawner : MonoBehaviour
     public void InitialRun()
     {
             spawnIncrementHeight= Block.currentBlock.transform.localScale.y;
+            calculateSpawnPosition();
     }
     
     public Block spawnBlock(){
