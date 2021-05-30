@@ -12,12 +12,16 @@ public class Block : MonoBehaviour
     Vector3 velocity;
 
     public static int blockCount;
+    
+
+    public bool stopped;
 
     void Start()
     {
         blockCount++;
 
         name= "Block"+blockCount;
+        
 
 
         if(blockCount %2==0){
@@ -36,18 +40,20 @@ public class Block : MonoBehaviour
         previousBlock= this;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-        
+    void Update(){
+        UpdateVelocity();
     }
 
+    
+
     public void Stop(){
-        velocity= Vector3.zero;
+        speed= 0;
+        stopped= true;
     }
 
     void FixedUpdate(){
+
+        
         checkEdges();
         transform.Translate(velocity* Time.smoothDeltaTime);
     }
@@ -68,9 +74,11 @@ public class Block : MonoBehaviour
         else if(distanceZ> Spawner.spawnDistance){
             velocity.z *= -1;
         }
+    }
 
-
-
+    void UpdateVelocity(){
+        
+        velocity= velocity.normalized*speed;
         
     }
 }

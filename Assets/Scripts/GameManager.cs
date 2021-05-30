@@ -13,12 +13,21 @@ public class GameManager : MonoBehaviour
 
     public float perfectHitTreshold= 0.1f;
 
+    //events
+    public event System.Action Miss;
+    public event System.Action Stack;
+    
+
+    
+
 
     void Start()
     {
         secondBlock.setAsCurrent();
         startingBlock.setAsPrevious();
         spawner.InitialRun();
+
+        
     }
 
     // Update is called once per frame
@@ -26,12 +35,14 @@ public class GameManager : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0)){
 
+           
+
 
             Block current= Block.currentBlock;
             Block previous= Block.previousBlock;
             Block spawnedBlock;
 
-            
+            current.Stop();
 
             //slice blocks 
             if(Block.blockCount%2==0){
@@ -40,7 +51,7 @@ public class GameManager : MonoBehaviour
             else{
                 SliceBlockOnX();
             }
-            current.Stop();
+            
 
             //set current as previous
             current.setAsPrevious();
@@ -52,6 +63,7 @@ public class GameManager : MonoBehaviour
             spawnedBlock.setAsCurrent();
 
             //move camera
+            print(StackManager.getDifficultyPercentage());
         }
         
     }
@@ -71,8 +83,11 @@ public class GameManager : MonoBehaviour
             current.transform.position= new Vector3(
                 previous.transform.position.x, current.transform.position.y,previous.transform.position.z);
 
+            Stack();
+
             return;
         }
+        Miss();
 
         //print(hangLength);
 
@@ -123,9 +138,10 @@ public class GameManager : MonoBehaviour
                 hangLength= 0;
                 current.transform.position= new Vector3(
                     previous.transform.position.x, current.transform.position.y,previous.transform.position.z);
-
+                Stack();
                 return;
             }
+            Miss();
             //print(hangLength);
 
             float newCurrentXScale= current.transform.localScale.x- Mathf.Abs(hangLength);
