@@ -28,11 +28,6 @@ public class Block : MonoBehaviour
         }
     }
 
-    void OnEnable(){
-        
-        
-    }
-
     public void setAsCurrent(){
         currentBlock= this;
     }
@@ -44,21 +39,37 @@ public class Block : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(velocity* Time.deltaTime);
-        checkEdges();
+        
     }
 
     public void Stop(){
         velocity= Vector3.zero;
     }
 
+    void FixedUpdate(){
+        transform.Translate(velocity* Time.deltaTime);
+        checkEdges();
+    }
+
     void checkEdges(){
-        if(transform.position.x> -Spawner.spawnPosition2.x || transform.position.x< Spawner.spawnPosition2.x ){
+
+        Block previous= previousBlock;
+
+        float distanceX, distanceZ;
+
+        distanceX= Mathf.Abs(transform.position.x- previous.transform.position.x);
+        distanceZ= Mathf.Abs(transform.position.z- previous.transform.position.z);
+
+        if(distanceX> Spawner.spawnDistance){
             velocity.x *= -1;
         }
-
-        else if(transform.position.z>  -Spawner.spawnPosition1.z || transform.position.z< Spawner.spawnPosition1.z ){
+        
+        else if(distanceZ> Spawner.spawnDistance){
             velocity.z *= -1;
         }
+
+
+
+        
     }
 }

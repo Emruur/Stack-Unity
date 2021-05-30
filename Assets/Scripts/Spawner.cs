@@ -19,7 +19,7 @@ public class Spawner : MonoBehaviour
     public void InitialRun()
     {
             spawnIncrementHeight= Block.currentBlock.transform.localScale.y;
-            calculateSpawnPosition();
+            
     }
     
     public Block spawnBlock(){
