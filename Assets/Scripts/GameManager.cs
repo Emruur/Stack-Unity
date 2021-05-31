@@ -35,12 +35,11 @@ public class GameManager : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0)){
 
-           
-
-
             Block current= Block.currentBlock;
             Block previous= Block.previousBlock;
             Block spawnedBlock;
+
+            print(current.speed);
 
             current.Stop();
 
@@ -56,6 +55,8 @@ public class GameManager : MonoBehaviour
             //set current as previous
             current.setAsPrevious();
 
+            //If 8 consecutive stacks increase previous size 
+
             //spawn block
             spawnedBlock= spawner.spawnBlock();
 
@@ -63,7 +64,7 @@ public class GameManager : MonoBehaviour
             spawnedBlock.setAsCurrent();
 
             //move camera
-            print(StackManager.getDifficultyPercentage());
+            
         }
         
     }

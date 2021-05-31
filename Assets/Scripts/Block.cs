@@ -8,7 +8,9 @@ public class Block : MonoBehaviour
     public static Block previousBlock;
 
     
-    public float speed= 1;
+    public Vector2 speedMinMax;
+
+    public float speed;
     Vector3 velocity;
 
     public static int blockCount;
@@ -18,6 +20,7 @@ public class Block : MonoBehaviour
 
     void Start()
     {
+        speed= speedMinMax.x;
         blockCount++;
 
         name= "Block"+blockCount;
@@ -77,6 +80,10 @@ public class Block : MonoBehaviour
     }
 
     void UpdateVelocity(){
+
+        if(!stopped){
+            speed= Mathf.Lerp(speedMinMax.x, speedMinMax.y, StackManager.getDifficultyPercentage());
+        }
         
         velocity= velocity.normalized*speed;
         
